@@ -6,7 +6,9 @@ import ch.qos.logback.core.rolling.RollingPolicy;
 public class RotatableFileAppender<E> extends RollingFileAppender<E> {
 
     public RotatableFileAppender() {
-        setTriggeringPolicy(new RotationBasedTriggeringPolicy<E>());
+        RotationBasedTriggeringPolicy triggeringPolicy = new RotationBasedTriggeringPolicy<>();
+        setTriggeringPolicy(triggeringPolicy);
+        triggeringPolicy.start();
         RollingPolicy rollingPolicy = new NoopRollingPolicy();
         setRollingPolicy(rollingPolicy);
         rollingPolicy.setParent(this);

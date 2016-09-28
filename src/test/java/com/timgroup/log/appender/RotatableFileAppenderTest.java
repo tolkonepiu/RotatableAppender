@@ -6,10 +6,13 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
+import ch.qos.logback.classic.LoggerContext;
+import ch.qos.logback.core.rolling.RollingPolicy;
 import org.junit.After;
 import org.junit.Test;
 
 import ch.qos.logback.core.encoder.EchoEncoder;
+import org.slf4j.LoggerFactory;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -37,6 +40,8 @@ public class RotatableFileAppenderTest {
 
     @Test
     public void itActuallyWorks() throws Exception {
+        LoggerContext lc = (LoggerContext) LoggerFactory.getILoggerFactory();
+
         logFile = File.createTempFile(getClass().getSimpleName(), ".log");
         rotatedLogFile = new File(logFile.getPath() + ".1");
 
@@ -44,6 +49,7 @@ public class RotatableFileAppenderTest {
         appender.setEncoder(new EchoEncoder<String>());
         appender.setFile(logFile.getPath());
         appender.setCheckCachePeriod(0);
+        appender.setContext(lc);
 
         appender.start();
 
